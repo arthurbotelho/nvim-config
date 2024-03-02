@@ -20,6 +20,7 @@ return {
       lspconfig.lua_ls.setup {}
       lspconfig.tsserver.setup {}
       lspconfig.gopls.setup {}
+      lspconfig.jsonls.setup {}
 
       vim.api.nvim_create_autocmd("LspAttach", {
         group = vim.api.nvim_create_augroup("UserLspConfig", {}),
