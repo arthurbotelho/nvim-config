@@ -21,6 +21,11 @@ return {
       lspconfig.tsserver.setup {}
       lspconfig.gopls.setup {}
       lspconfig.jsonls.setup {}
+      lspconfig.clangd.setup {
+        "clangd",
+        "--offset-encoding=utf-16"
+      }
+      lspconfig.neocmake.setup{}
 
       vim.api.nvim_create_autocmd("LspAttach", {
         group = vim.api.nvim_create_augroup("UserLspConfig", {}),
