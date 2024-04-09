@@ -4,8 +4,9 @@ vim.cmd("set showmode")
 vim.cmd("set nowrap")
 
 vim.cmd("set shiftwidth=2")
-vim.cmd("set softtabstop=4")
+vim.cmd("set softtabstop=2")
 vim.cmd("set expandtab")
+vim.cmd("set textwidth=100")
 vim.cmd("set incsearch")
 vim.cmd("set hlsearch")
 

@@ -10,6 +10,7 @@ return {
     config = function()
       require("mason-lspconfig").setup {
         ensure_installed = { "lua_ls", "gopls", "tsserver" },
+        automatic_installation = true,
       }
     end,
   },
@@ -21,11 +22,14 @@ return {
       lspconfig.tsserver.setup {}
       lspconfig.gopls.setup {}
       lspconfig.jsonls.setup {}
+
       lspconfig.clangd.setup {
-        "clangd",
-        "--offset-encoding=utf-16"
+        cmd = {
+          "clangd-18",
+          "--offset-encoding=utf-16",
+          "--fallback-style=llvm",
+        },
       }
-      lspconfig.neocmake.setup{}
 
       vim.api.nvim_create_autocmd("LspAttach", {
         group = vim.api.nvim_create_augroup("UserLspConfig", {}),
@@ -35,6 +39,7 @@ return {
           vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
           vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
           vim.keymap.set("n", "gi", vim.lsp.buf.implementation, opts)
+          vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
           vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, opts)
         end,
       })

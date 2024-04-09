@@ -11,6 +11,14 @@ return {
     vim.keymap.set("n", "<M-1>", ":Neotree filesystem reveal right toggle<CR>", {})
     vim.keymap.set("n", "<M-2>", ":Neotree git_status right toggle<CR>", {})
     vim.keymap.set("n", "<M-3>", ":Neotree filesystem focus right<CR>", {})
+    require("neo-tree").setup {
+      filesystem = {
+        filtered_items = {
+          visible = true,
+          hide_dotfiles = false,
+          hide_gitignored = true,
+        },
+      },
+    }
   end,
 }
-
