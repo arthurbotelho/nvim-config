@@ -11,6 +11,7 @@ vim.cmd("set incsearch")
 vim.cmd("set hlsearch")
 
 vim.g.mapleader = " "
+vim.g.have_nerd_font = "true"
 
 vim.cmd("noremap <Up> <Nop>")
 vim.cmd("noremap <Down> <Nop>")

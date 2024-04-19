@@ -18,6 +18,21 @@ return {
     "neovim/nvim-lspconfig",
     config = function()
       local lspconfig = require "lspconfig"
+
+      lspconfig.glslls.setup {
+
+        cmd = { "glslls", "--stdin" },
+        filetypes = { "glsl", "vert", "tesc", "tese", "frag", "geom", "comp" },
+        single_file_support = true,
+        capabilities = {
+          textDocument = {
+            completion = {
+              editsNearCursor = true,
+            },
+          },
+          offsetEncoding = { "utf-8", "utf-16" },
+        },
+      }
       lspconfig.lua_ls.setup {}
       lspconfig.tsserver.setup {}
       lspconfig.gopls.setup {}
