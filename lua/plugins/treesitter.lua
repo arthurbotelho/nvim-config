@@ -10,6 +10,7 @@ return {
     local treesitter_cfg = require "nvim-treesitter.configs"
     treesitter_cfg.setup {
       auto_install = true,
+      ensure_installed = {'kotlin'},
       highlight = { enable = true },
       indent = { enable = true },
       incremental_selection = {

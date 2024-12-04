@@ -37,6 +37,14 @@ return {
       lspconfig.tsserver.setup {}
       lspconfig.gopls.setup {}
       lspconfig.jsonls.setup {}
+      lspconfig.cmake.setup {}
+      lspconfig.kotlin_language_server.setup {}
+
+      local capabilities = vim.lsp.protocol.make_client_capabilities()
+      capabilities.textDocument.completion.completionItem.snippetSupport = true
+      lspconfig.cssls.setup {
+        capabilities = capabilities,
+      }
 
       lspconfig.clangd.setup {
         cmd = {
@@ -55,6 +63,7 @@ return {
           vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
           vim.keymap.set("n", "gi", vim.lsp.buf.implementation, opts)
           vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
+          vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, opts)
           vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, opts)
         end,
       })

@@ -7,11 +7,11 @@ return {
     config = function()
       local builtin = require "telescope.builtin"
       vim.keymap.set("n", "<C-p>", builtin.find_files, {})
-      vim.keymap.set("n", "<leader>fg", builtin.live_grep, {})
+      vim.keymap.set("n", "<leader>lg", builtin.live_grep, {})
       vim.keymap.set("n", "<leader>fr", builtin.lsp_references, {})
       vim.keymap.set("n", "<leader>ff", builtin.current_buffer_fuzzy_find, {})
       -- list all functions in file
-      vim.keymap.set("n", "<leader>fn", builtin.lsp_document_symbols, {})
+      vim.keymap.set("n", "<leader>fs", builtin.lsp_document_symbols, {})
     end,
   },
   {
