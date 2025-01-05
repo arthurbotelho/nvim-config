@@ -24,3 +24,4 @@ vim.cmd "nnoremap <A-x> <C-x>"
 -- vim.cmd("nnoremap <C-J> :bprev<CR>")
 -- vim.cmd("nnoremap <C-K> :bnext<CR>")
 vim.cmd "nnoremap <leader>s :w<CR>"
+

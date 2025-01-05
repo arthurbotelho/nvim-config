@@ -1,4 +1,5 @@
 return {
+
   {
     "williamboman/mason.nvim",
     config = function()
@@ -16,8 +17,15 @@ return {
   },
   {
     "neovim/nvim-lspconfig",
+    dependencies = { "saghen/blink.cmp" },
+
     config = function()
+      local capabilities = require("blink.cmp").get_lsp_capabilities()
       local lspconfig = require "lspconfig"
+
+      lspconfig.lua_ls.setup {
+        capabilities = capabilities,
+      }
 
       lspconfig.glslls.setup {
 
@@ -33,12 +41,11 @@ return {
           offsetEncoding = { "utf-8", "utf-16" },
         },
       }
-      lspconfig.lua_ls.setup {}
-      lspconfig.tsserver.setup {}
       lspconfig.gopls.setup {}
+
       lspconfig.jsonls.setup {}
 
-      local configs = require("lspconfig.configs")
+      local configs = require "lspconfig.configs"
       if not configs.neocmake then
         configs.neocmake = {
           default_config = {
@@ -48,30 +55,37 @@ return {
               return lspconfig.util.find_git_ancestor(fname)
             end,
             single_file_support = true, -- suggested
-            on_attach = on_attach,      -- on_attach is the on_attach function you defined
+            on_attach = on_attach, -- on_attach is the on_attach function you defined
             init_options = {
               format = {
-                enable = true
+                enable = true,
               },
               lint = {
-                enable = true
+                enable = true,
               },
-              scan_cmake_in_package = true -- default is true
-            }
-          }
+              scan_cmake_in_package = true, -- default is true
+            },
+          },
         }
-        lspconfig.neocmake.setup({})
+        lspconfig.neocmake.setup {}
       end
 
-      lspconfig.kotlin_language_server.setup {}
+      lspconfig.gradle_ls.setup { capabilities = capabilities }
+      lspconfig.kotlin_language_server.setup {
+        filetypes = { "kotlin", "kt", "kts" },
+        on_attach = on_attach,
+        cmd = {
+          os.getenv "HOME" .. "/lsp/kotlin-language-server/server/build/install/server/bin/kotlin-language-server",
+        },
+        capabilities = capabilities,
+      }
 
-      local capabilities = vim.lsp.protocol.make_client_capabilities()
-      capabilities.textDocument.completion.completionItem.snippetSupport = true
       lspconfig.cssls.setup {
         capabilities = capabilities,
       }
 
       lspconfig.clangd.setup {
+        capabilities = capabilities,
         cmd = {
           "clangd",
           "--offset-encoding=utf-16",

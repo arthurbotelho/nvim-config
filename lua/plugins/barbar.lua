@@ -13,7 +13,7 @@ return {
 
       map("n", "<A-,>", "<Cmd>BufferPrevious<CR>", opts)
       map("n", "<A-.>", "<Cmd>BufferNext<CR>", opts)
-      map("n", "<C-w>", "<Cmd>BufferClose<CR>", opts)
+      map("n", "<A-w>", "<Cmd>BufferClose<CR>", opts)
     end,
     opts = {},
     version = "^1.0.0",
