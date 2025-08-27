@@ -18,7 +18,11 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require "vim-config"
-require("lazy").setup "plugins"
-
-
-
+require("lazy").setup {
+  spec = {
+    {
+      import = "plugins",
+    },
+  },
+  checker = { enabled = true },
+}

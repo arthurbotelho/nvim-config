@@ -1,19 +1,11 @@
 return {
-
   {
-    "williamboman/mason.nvim",
-    config = function()
-      require("mason").setup()
-    end,
-  },
-  {
-    "williamboman/mason-lspconfig.nvim",
-    config = function()
-      require("mason-lspconfig").setup {
-        ensure_installed = { "lua_ls" },
-        automatic_installation = true,
-      }
-    end,
+    "mason-org/mason-lspconfig.nvim",
+    opts = {},
+    dependencies = {
+      { "mason-org/mason.nvim", opts = {} },
+      "neovim/nvim-lspconfig",
+    },
   },
   {
     "neovim/nvim-lspconfig",
@@ -21,14 +13,14 @@ return {
 
     config = function()
       local capabilities = require("blink.cmp").get_lsp_capabilities()
-      local lspconfig = require "lspconfig"
+      -- LSP configs
 
-      lspconfig.lua_ls.setup {
+      vim.lsp.enable "lua_ls"
+      vim.lsp.config("lua_ls", {
         capabilities = capabilities,
-      }
+      })
 
-      lspconfig.glslls.setup {
-
+      vim.lsp.config("glslls", {
         cmd = { "glslls", "--stdin" },
         filetypes = { "glsl", "vert", "tesc", "tese", "frag", "geom", "comp" },
         single_file_support = true,
@@ -40,59 +32,89 @@ return {
           },
           offsetEncoding = { "utf-8", "utf-16" },
         },
-      }
-      lspconfig.gopls.setup {}
+      })
 
-      lspconfig.jsonls.setup {}
+      vim.lsp.config("gopls", {})
 
-      local configs = require "lspconfig.configs"
-      if not configs.neocmake then
-        configs.neocmake = {
-          default_config = {
-            cmd = { "neocmakelsp", "--stdio" },
-            filetypes = { "cmake" },
-            root_dir = function(fname)
-              return lspconfig.util.find_git_ancestor(fname)
-            end,
-            single_file_support = true, -- suggested
-            on_attach = on_attach, -- on_attach is the on_attach function you defined
-            init_options = {
-              format = {
-                enable = true,
-              },
-              lint = {
-                enable = true,
-              },
-              scan_cmake_in_package = true, -- default is true
-            },
-          },
-        }
-        lspconfig.neocmake.setup {}
-      end
+      vim.lsp.config("jsonls", {})
 
-      lspconfig.gradle_ls.setup { capabilities = capabilities }
-      lspconfig.kotlin_language_server.setup {
-        filetypes = { "kotlin", "kt", "kts" },
-        on_attach = on_attach,
-        cmd = {
-          os.getenv "HOME" .. "/lsp/kotlin-language-server/server/build/install/server/bin/kotlin-language-server",
-        },
-        capabilities = capabilities,
-      }
+      vim.lsp.config("gradle_ls", { capabilities = capabilities })
 
-      lspconfig.cssls.setup {
-        capabilities = capabilities,
-      }
+      vim.lsp.config("cssls", { capabilities = capabilities })
 
-      lspconfig.clangd.setup {
+      vim.lsp.config("clangd", {
         capabilities = capabilities,
         cmd = {
           "clangd",
           "--offset-encoding=utf-16",
           "--fallback-style=llvm",
         },
-      }
+      })
 
+      vim.lsp.config("rust_analyzer", {
+        settings = {
+          ["rust-analyzer"] = {
+            checkOnSave = {
+              command = "clippy",
+            },
+            cargo = {
+              allFeatures = true,
+            },
+            formatting = {
+              enable = true,
+            },
+          },
+        },
+      })
+
+      vim.lsp.config("glslls", {
+        cmd = { "glslls", "--stdin" },
+        filetypes = { "glsl", "vert", "tesc", "tese", "frag", "geom", "comp" },
+        single_file_support = true,
+        capabilities = {
+          textDocument = {
+            completion = {
+              editsNearCursor = true,
+            },
+          },
+          offsetEncoding = { "utf-8", "utf-16" },
+        },
+      })
+
+      vim.lsp.config("gopls", {})
+
+      vim.lsp.config("jsonls", {})
+
+      vim.lsp.config("gradle_ls", { capabilities = capabilities })
+
+      vim.lsp.config("cssls", { capabilities = capabilities })
+
+      vim.lsp.config("clangd", {
+        capabilities = capabilities,
+        cmd = {
+          "clangd",
+          "--offset-encoding=utf-16",
+          "--fallback-style=llvm",
+        },
+      })
+
+      vim.lsp.config("rust_analyzer", {
+        settings = {
+          ["rust-analyzer"] = {
+            checkOnSave = {
+              command = "clippy",
+            },
+            cargo = {
+              allFeatures = true,
+            },
+            formatting = {
+              enable = true,
+            },
+          },
+        },
+      })
+
+      -- hotkey configs
       vim.api.nvim_create_autocmd("LspAttach", {
         group = vim.api.nvim_create_augroup("UserLspConfig", {}),
         callback = function(ev)
@@ -102,6 +124,8 @@ return {
           vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
           vim.keymap.set("n", "gi", vim.lsp.buf.implementation, opts)
           vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
+          vim.keymap.set("n", "<leader>ne", vim.diagnostic.goto_next, opts)
+          vim.keymap.set("n", "<leader>pe", vim.diagnostic.goto_prev, opts)
           vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, opts)
           vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, opts)
         end,
