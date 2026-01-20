@@ -2,13 +2,10 @@ return {
   "saghen/blink.cmp",
   dependencies = { "rafamadriz/friendly-snippets" },
 
-  build = "cargo +nightly build --release",
-
-  version = "*",
-  -- AND/OR build from source, requires nightly: https://rust-lang.github.io/rustup/concepts/channels.html#working-with-nightly-rust
+  version = "1.*",
   build = "cargo build --release",
-  -- If you use nix, you can build from source using latest nightly rust with:
-  -- build = 'nix run .#build-plugin',
+
+  --build = "cargo build --release",
 
   ---@module 'blink.cmp'
   ---@type blink.cmp.Config
@@ -20,6 +17,19 @@ return {
     },
 
     completion = { documentation = { auto_show = false } },
+    cmdline = {
+      sources = function()
+        local type = vim.fn.getcmdtype()
+        -- Pesquisa no buffer (/) ou comandos (:)
+        if type == "/" or type == "?" then
+          return { "buffer" }
+        end
+        if type == ":" then
+          return { "cmdline" }
+        end
+        return {}
+      end,
+    },
     sources = {
       default = { "lsp", "path", "snippets", "buffer" },
     },

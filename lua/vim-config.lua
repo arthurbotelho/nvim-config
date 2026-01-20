@@ -25,3 +25,9 @@ vim.cmd "nnoremap <A-x> <C-x>"
 -- vim.cmd("nnoremap <C-K> :bnext<CR>")
 vim.cmd "nnoremap <leader>s :w<CR>"
 
+-- Mostra menu de sugestões na linha de comando
+vim.opt.wildmenu = true
+-- Configura como as sugestões aparecem (list:longest,full)
+vim.opt.wildmode = "longest:full,full"
+-- Mostra o comando sendo digitado e efeitos (como em substituições)
+vim.opt.inccommand = "nosplit"
