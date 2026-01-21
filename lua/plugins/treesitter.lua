@@ -1,27 +1,20 @@
 return {
-  "nvim-treesitter/nvim-treesitter",
-  build = ":TSUpdate",
-  event = { "BufReadPre", "BufNewFile" },
-  dependencies = {
-    "nvim-treesitter/nvim-treesitter-textobjects",
-  },
+	"nvim-treesitter/nvim-treesitter",
+	branch = "main",
+	build = ":TSUpdate",
 
-  config = function()
-    local treesitter_cfg = require "nvim-treesitter.configs"
-    treesitter_cfg.setup {
-      auto_install = true,
-      ensure_installed = { "kotlin", "c", "cpp" },
-      highlight = { enable = true },
-      indent = { enable = true },
-      incremental_selection = {
-        enable = true,
-        keymaps = {
-          init_selection = "<C-space>",
-          node_incremental = "<C-space>",
-          scope_incremental = false,
-          node_decremental = "<bs>",
-        },
-      },
-    }
-  end,
+	config = function()
+		local ts = require("nvim-treesitter")
+		local parsers = { "lua", "vim", "vimdoc", "bash", "markdown", "cpp", "regex" }
+
+		for _, parser in ipairs(parsers) do
+			pcall(ts.install, parser)
+		end
+
+		vim.api.nvim_create_autocmd("FileType", {
+			callback = function()
+				pcall(vim.treesitter.start)
+			end,
+		})
+	end,
 }
